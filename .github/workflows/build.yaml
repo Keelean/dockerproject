@@ -1,20 +1,18 @@
-name: Build and Test App
+name: Build, Test , and Raise Pull Request
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ stage ]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Login to Docker Hub
-      id: login
-      run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{secrets.DOCKER_PASSWORD }}
     - name: Build the Docker image
       id: build
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/spring-doc:1.0.6
-    - name: Push the Docker image
-      id: push
-      run: docker push ${{ secrets.DOCKER_USER }}/spring-doc:1.0.6
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/spring-doc
+    - name: Raise a pull Request
+      id: pull-request
+      uses: repo-sync/pull-request@v2
+      with:
+        destination_branch: master
+        github_token: ${{secrets.GH_TOKEN}}
