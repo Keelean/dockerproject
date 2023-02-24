@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       id: build
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/spring-doc
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/dockerproject
     - name: Raise a pull Request
       id: pull-request
       uses: repo-sync/pull-request@v2
